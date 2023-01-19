@@ -1,38 +1,44 @@
 import express from 'express'
+import { v4 } from 'uuid'
 // import expressJwt from 'express-jwt'
 // import { doc, getDoc } from 'firebase/firestore'
 // import authCtrl from '../controllers/auth.controller'
 // import config from '../../config/config'
 
-import { Users } from '../../../firebase'
+import { db, users } from '../../../firebase'
 
 const router = express.Router() // eslint-disable-line new-cap
 
-router.get('/users', async (req, res) => {
-    const snapshot = await Users.get()
-    const list = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+const verify = (data) => {
+    console.log(data)
+    return data
+}
+
+router.get('/users', verify, async (req, res) => {
+    const snapshot = await users.get()
+    const list = snapshot.docs.map((doc) => doc.data())
 
     res.send(list)
 })
 
 router.post('/user/sign-up', async (req, res) => {
+    const uid = req.body.phone.toString().split(' ').join('')
+    const uuid = v4()
     const data = {
         name: req.body.name,
         college: req.body.college,
         age: req.body.age,
+        phone: req.body.phone,
+        uuid,
     }
-    const id = req.body.id ? req.body.id : '1729'
-    await Users.doc(id).set(data)
+    const response = await db.collection('users').doc(uid).set(data)
 
-    const userRef = Users.doc('1729')
-    const doc = await userRef.get()
-
-    res.send(doc.data())
+    res.send(response)
 })
 
 router.get('/user/:id', async (req, res) => {
     const id = req.params.id
-    const userRef = Users.doc(id.toString())
+    const userRef = users.doc(id.toString())
     const snapshot = await userRef.get()
     const data = snapshot.data()
 

@@ -1,6 +1,6 @@
 // import firebase from 'firebase'
 import admin from 'firebase-admin'
-import serviceAccount from './adminsdk-private.json'
+import serviceAccount from './adminsdk-private-dev.json'
 
 // const firebaseConfig = {
 //     apiKey: 'AIzaSyCwJlX-MBeZQqZmEn6DRgOVPKei5UY5JPg',
@@ -18,5 +18,5 @@ admin.initializeApp({
 
 // firebase.initializeApp(firebaseConfig)
 const db = admin.firestore()
-const Users = db.collection('Users')
-export { Users, db }
+const users = db.collection('users')
+export { users, db }
