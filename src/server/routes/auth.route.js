@@ -5,7 +5,7 @@ import { v4 } from 'uuid'
 // import authCtrl from '../controllers/auth.controller'
 // import config from '../../config/config'
 
-import { db, users } from '../../../firebase'
+import { db, users } from '../../../firebase.js'
 
 const router = express.Router() // eslint-disable-line new-cap
 

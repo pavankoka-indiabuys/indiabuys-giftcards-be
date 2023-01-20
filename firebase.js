@@ -1,6 +1,8 @@
 // import firebase from 'firebase'
 import admin from 'firebase-admin'
-import serviceAccount from './adminsdk-private-dev.json'
+import { createRequire } from 'module'
+const require = createRequire(import.meta.url)
+const serviceAccount = require('./adminsdk-private-dev.json')
 
 // const firebaseConfig = {
 //     apiKey: 'AIzaSyCwJlX-MBeZQqZmEn6DRgOVPKei5UY5JPg',

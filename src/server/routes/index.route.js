@@ -1,6 +1,6 @@
 import express from 'express'
 // import userRoutes from './user.route'
-import authRoutes from './auth.route'
+import authRoutes from './auth.route.js'
 // import timelineRoutes from './timeline.route';
 // import graphqlRoutes from './graphql.route';
 

@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken'
 import admin from 'firebase-admin'
 import httpStatus from 'http-status'
-import APIError from '../helpers/APIError'
-import config from '../../config/config'
+import APIError from '../helpers/APIError.js'
+import config from '../../config/config.js'
 
 const serviceAccount = require('../../adminsdk-private-dev.json')
 

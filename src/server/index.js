@@ -3,8 +3,8 @@
 // import { Users } from './firebase'
 // const app = express()
 
-import config from '../config/config'
-import app from '../config/express'
+import config from '../config/config.js'
+import app from '../config/express.js'
 
 import debug from 'debug'
 debug('node-express-firebase:index')
