@@ -9,12 +9,13 @@ import { db, users } from '../../../firebase.js'
 
 const router = express.Router() // eslint-disable-line new-cap
 
-const verify = (data) => {
-    console.log(data)
-    return data
+const verify = (req, res, next) => {
+    console.log(req, res)
+    next()
 }
 
-router.get('/users', verify, async (req, res) => {
+router.get('/users', async (req, res) => {
+    console.log('------------ inn -----------')
     const snapshot = await users.get()
     const list = snapshot.docs.map((doc) => doc.data())
 
