@@ -21,19 +21,6 @@ router.get('/ip', (req, res) => {
 // // mount auth routes at /auth
 router.use('/auth', authRoutes)
 
-router.use((req, res, next) => {
-    const err = new Error('Not Found')
-    err.status = 404
-    next(err)
-})
-
-router.use((err, req, res, next) => {
-    res.locals.error = err
-    const status = err.status || 500
-    res.status(status)
-    res.render('error')
-})
-
 // // mount timeline routes at /timeline
 // router.use('/timelines', timelineRoutes);
 

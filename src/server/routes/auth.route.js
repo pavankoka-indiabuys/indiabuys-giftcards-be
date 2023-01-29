@@ -23,27 +23,48 @@ router.get('/users', async (req, res) => {
 })
 
 router.post('/user/sign-up', async (req, res) => {
-    const uid = req.body.phone.toString().split(' ').join('')
-    const uuid = v4()
-    const data = {
-        name: req.body.name,
-        college: req.body.college,
-        age: req.body.age,
-        phone: req.body.phone,
-        uuid,
-    }
-    const response = await db.collection('users').doc(uid).set(data)
+    try {
+        const uid = req.body.phone.toString().split(' ').join('')
+        const uuid = v4()
+        // const response = await db.collection('users-uuid').doc(uid).set(uuid)
+        const response = await db.collection('users').doc(uid).set(data)
 
-    res.send(response)
+        res.send(response)
+    } catch (err) {
+        res.status('400').send({ status: 401, message: err.message })
+    }
 })
 
-router.get('/user/:id', async (req, res) => {
-    const id = req.params.id
-    const userRef = users.doc(id.toString())
+router.post('/user/sign-in', async (req, res, next) => {
+    const uid = req.body.phone.toString().split(' ').join('')
+    const userRef = db.collection('users').doc(uid)
     const snapshot = await userRef.get()
     const data = snapshot.data()
 
-    res.send(data)
+    if (data) {
+        res.send(data)
+    } else {
+        res.status(401).send({
+            status: 401,
+            message: 'User not Registerd with us! Try again after Sign-up!',
+        })
+    }
+})
+
+router.get('/user/:id', async (req, res) => {
+    try {
+        const id = req.params.id
+        const userRef = db.collection('users').doc(id.toString())
+        const snapshot = await userRef.get()
+        const data = snapshot.data()
+
+        res.send(data)
+    } catch (err) {
+        res.status(400).send({
+            status: 400,
+            message: err.message,
+        })
+    }
 })
 
 // /** POST /api/auth/login - Returns token if correct firebase token is provided */
