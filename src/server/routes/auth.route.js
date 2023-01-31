@@ -25,13 +25,31 @@ router.get('/users', async (req, res) => {
 router.post('/user/sign-up', async (req, res) => {
     try {
         const uid = req.body.phone.toString().split(' ').join('')
-        const uuid = v4()
-        // const response = await db.collection('users-uuid').doc(uid).set(uuid)
-        const response = await db.collection('users').doc(uid).set(data)
+        const userRef = db.collection('users').doc(uid)
+        const snapshot = await userRef.get()
+        const data = snapshot.data()
 
-        res.send(response)
+        if (data) {
+            res.status(401).send({
+                status: 401,
+                message: 'User alraedy Registerd with us! Try Sign in!',
+            })
+        }
+
+        const uuid = v4()
+        const payload = { ...req.body, uuid }
+        const response = await db.collection('users').doc(uid).set(payload)
+
+        if (response) {
+            res.send((await userRef.get()).data())
+        } else {
+            res.status(401).send({
+                status: 401,
+                message: 'User not Registerd with us! Try again after Sign-up!',
+            })
+        }
     } catch (err) {
-        res.status('400').send({ status: 401, message: err.message })
+        res.status('400').send({ status: 400, message: err.message })
     }
 })
 
