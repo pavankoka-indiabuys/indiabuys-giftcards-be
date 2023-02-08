@@ -2,7 +2,7 @@ import express from 'express'
 import { v4 } from 'uuid'
 // import expressJwt from 'express-jwt'
 // import { doc, getDoc } from 'firebase/firestore'
-// import authCtrl from '../controllers/auth.controller'
+import { getWoohooAuthorizationToken } from '../controllers/auth.controller.js'
 // import config from '../../config/config'
 
 import { db, users } from '../../../firebase.js'
@@ -15,7 +15,6 @@ const verify = (req, res, next) => {
 }
 
 router.get('/users', async (req, res) => {
-    console.log('------------ inn -----------')
     const snapshot = await users.get()
     const list = snapshot.docs.map((doc) => doc.data())
 
@@ -77,6 +76,19 @@ router.get('/user/:id', async (req, res) => {
         const data = snapshot.data()
 
         res.send(data)
+    } catch (err) {
+        res.status(400).send({
+            status: 400,
+            message: err.message,
+        })
+    }
+})
+
+router.get('/token', async (req, res) => {
+    try {
+        const token = await getWoohooAuthorizationToken()
+
+        res.send(token)
     } catch (err) {
         res.status(400).send({
             status: 400,

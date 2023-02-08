@@ -10,6 +10,7 @@ import expressWinston from 'express-winston'
 import expressValidation from 'express-validation'
 import helmet from 'helmet'
 
+import APIError from '../server/helpers/APIError'
 import winstonInstance from './winston.js'
 import routes from '../server/routes/index.route.js'
 import config from './config.js'

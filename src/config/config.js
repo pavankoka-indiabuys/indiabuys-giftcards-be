@@ -9,6 +9,15 @@ if (error) {
 const config = {
     env: envVars?.NODE_ENV,
     port: envVars?.PORT,
+    keys: {
+        woohoo: {
+            clientId: envVars.WOOHOO_CLIENT_ID,
+            clientSecret: envVars.WOOHOO_CLIENT_SECRET,
+            username: envVars.WOOHOO_USERNAME,
+            password: envVars.WOOHOO_PASSWORD,
+            endpoint: envVars.WOOHOO_ENDPOINT,
+        },
+    },
 }
 
 export default config
