@@ -170,9 +170,9 @@ async function getWoohooAuthorizationCode() {
 async function getWoohooAuthorizationToken() {
     const authorization = await getWoohooAuthorizationCode()
 
-    console.log('-------------- in ---------------', authorization)
+    console.log('-------------- in ---------------', authorization.data)
 
-    if (isValidJSON(authorization)) {
+    if (authorization && authorization.data) {
         const options = {
             method: 'POST',
             hostname: config.keys.woohoo.endpoint,
@@ -195,7 +195,7 @@ async function getWoohooAuthorizationToken() {
                 JSON.stringify({
                     clientId: config.keys.woohoo.clientId,
                     clientSecret: config.keys.woohoo.clientSecret,
-                    authorizationCode: authorization.authorizationCode,
+                    authorizationCode: authorization.data.authorizationCode,
                 }),
             )
 
