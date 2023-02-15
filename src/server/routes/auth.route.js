@@ -88,6 +88,8 @@ router.get('/token', async (req, res) => {
     try {
         const token = await getWoohooAuthorizationToken()
 
+        console.log('--------------- in token ----------', token)
+
         res.send(token)
     } catch (err) {
         res.status(400).send({

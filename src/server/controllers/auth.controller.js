@@ -132,7 +132,7 @@ async function getWoohooAuthorizationCode() {
     }
 
     return axios.post(
-        `https://extapi12.woohoo.in/oauth2/verify`,
+        `${config.keys.woohoo.endpoint}/oauth2/verify`,
         {
             clientId: config.keys.woohoo.clientId,
             username: config.keys.woohoo.username,
@@ -145,26 +145,6 @@ async function getWoohooAuthorizationCode() {
             },
         },
     )
-
-    // return new Promise((resolve, reject) => {
-    //     let response = ''
-    //     const req = http.request(options, (res) => {
-    //         res.on('data', (data) => {
-    //             response += data
-    //         })
-    //         res.on('end', () => resolve(response))
-    //     })
-
-    //     req.write(
-    //         JSON.stringify({
-    //             clientId: config.keys.woohoo.clientId,
-    //             username: config.keys.woohoo.username,
-    //             password: config.keys.woohoo.password,
-    //         }),
-    //     )
-
-    //     req.end()
-    // })
 }
 
 async function getWoohooAuthorizationToken() {
@@ -182,25 +162,42 @@ async function getWoohooAuthorizationToken() {
             },
         }
 
-        return new Promise((resolve, reject) => {
-            let response = ''
-            const req = http.request(options, (res) => {
-                res.on('data', (d) => {
-                    response += d
-                })
-                res.on('end', () => resolve(response))
-            })
+        console.log('---------- in auth -----------')
 
-            req.write(
-                JSON.stringify({
-                    clientId: config.keys.woohoo.clientId,
-                    clientSecret: config.keys.woohoo.clientSecret,
-                    authorizationCode: authorization.data.authorizationCode,
-                }),
-            )
+        return axios.post(
+            `${config.keys.woohoo.endpoint}/oauth2/verify`,
+            {
+                clientId: config.keys.woohoo.clientId,
+                clientSecret: config.keys.woohoo.clientSecret,
+                authorizationCode: authorization.data.authorizationCode,
+            },
+            {
+                port: 443,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            },
+        )
 
-            req.end()
-        })
+        // return new Promise((resolve, reject) => {
+        //     let response = ''
+        //     const req = http.request(options, (res) => {
+        //         res.on('data', (d) => {
+        //             response += d
+        //         })
+        //         res.on('end', () => resolve(response))
+        //     })
+
+        //     req.write(
+        //         JSON.stringify({
+        //             clientId: config.keys.woohoo.clientId,
+        //             clientSecret: config.keys.woohoo.clientSecret,
+        //             authorizationCode: authorization.data.authorizationCode,
+        //         }),
+        //     )
+
+        //     req.end()
+        // })
     } else {
         return authorization
     }
