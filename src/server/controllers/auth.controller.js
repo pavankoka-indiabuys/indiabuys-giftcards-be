@@ -150,8 +150,6 @@ async function getWoohooAuthorizationCode() {
 async function getWoohooAuthorizationToken() {
     const authorization = await getWoohooAuthorizationCode()
 
-    console.log('-------------- in ---------------', authorization.data)
-
     if (authorization && authorization.data) {
         const options = {
             method: 'POST',
@@ -161,8 +159,6 @@ async function getWoohooAuthorizationToken() {
                 'Content-Type': 'application/json',
             },
         }
-
-        console.log('---------- in auth -----------')
 
         return axios.post(
             `${config.keys.woohoo.endpoint}/oauth2/token`,
@@ -178,26 +174,6 @@ async function getWoohooAuthorizationToken() {
                 },
             },
         )
-
-        // return new Promise((resolve, reject) => {
-        //     let response = ''
-        //     const req = http.request(options, (res) => {
-        //         res.on('data', (d) => {
-        //             response += d
-        //         })
-        //         res.on('end', () => resolve(response))
-        //     })
-
-        //     req.write(
-        //         JSON.stringify({
-        //             clientId: config.keys.woohoo.clientId,
-        //             clientSecret: config.keys.woohoo.clientSecret,
-        //             authorizationCode: authorization.data.authorizationCode,
-        //         }),
-        //     )
-
-        //     req.end()
-        // })
     } else {
         return authorization
     }
