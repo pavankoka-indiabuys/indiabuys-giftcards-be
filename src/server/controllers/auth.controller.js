@@ -120,7 +120,7 @@ import config from '../../config/config.js'
 //     })
 // }
 
-function getWoohooAuthorizationCode() {
+async function getWoohooAuthorizationCode() {
     const options = {
         method: 'POST',
         hostname: config.keys.woohoo.endpoint,
@@ -132,44 +132,45 @@ function getWoohooAuthorizationCode() {
     }
 
     return axios.post(
-        `${config.keys.woohoo.endpoint}/oauth2/verify`,
+        `https://extapi12.woohoo.in/oauth2/verify`,
         {
             clientId: config.keys.woohoo.clientId,
             username: config.keys.woohoo.username,
             password: config.keys.woohoo.password,
         },
         {
-            method: 'post',
+            port: 443,
             headers: {
                 'Content-Type': 'application/json',
             },
         },
     )
 
-    return new Promise((resolve, reject) => {
-        let response = ''
-        const req = http.request(options, (res) => {
-            res.on('data', (data) => {
-                response += data
-            })
-            res.on('end', () => resolve(response))
-        })
+    // return new Promise((resolve, reject) => {
+    //     let response = ''
+    //     const req = http.request(options, (res) => {
+    //         res.on('data', (data) => {
+    //             response += data
+    //         })
+    //         res.on('end', () => resolve(response))
+    //     })
 
-        req.write(
-            JSON.stringify({
-                clientId: config.keys.woohoo.clientId,
-                username: config.keys.woohoo.username,
-                password: config.keys.woohoo.password,
-            }),
-        )
+    //     req.write(
+    //         JSON.stringify({
+    //             clientId: config.keys.woohoo.clientId,
+    //             username: config.keys.woohoo.username,
+    //             password: config.keys.woohoo.password,
+    //         }),
+    //     )
 
-        req.end()
-    })
+    //     req.end()
+    // })
 }
 
 async function getWoohooAuthorizationToken() {
     const authorization = await getWoohooAuthorizationCode()
-    return authorization
+
+    console.log('-------------- in ---------------', authorization)
 
     if (isValidJSON(authorization)) {
         const options = {
