@@ -123,6 +123,7 @@ function getWoohooAuthorizationCode() {
     const options = {
         method: 'POST',
         hostname: config.keys.woohoo.endpoint,
+        port: 443,
         path: '/oauth2/verify',
         headers: {
             'Content-Type': 'application/json',
