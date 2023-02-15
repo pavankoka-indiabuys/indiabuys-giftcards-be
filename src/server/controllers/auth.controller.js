@@ -165,7 +165,7 @@ async function getWoohooAuthorizationToken() {
         console.log('---------- in auth -----------')
 
         return axios.post(
-            `${config.keys.woohoo.endpoint}/oauth2/verify`,
+            `${config.keys.woohoo.endpoint}/oauth2/token`,
             {
                 clientId: config.keys.woohoo.clientId,
                 clientSecret: config.keys.woohoo.clientSecret,
