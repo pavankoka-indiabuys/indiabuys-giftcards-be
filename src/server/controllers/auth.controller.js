@@ -2,6 +2,7 @@ import http from 'http'
 import jwt from 'jsonwebtoken'
 // import admin from 'firebase-admin'
 import httpStatus from 'http-status'
+import axios from 'axios'
 // import APIError from '../helpers/APIError.js'
 import isValidJSON from '../helpers/isValidJson.js'
 import config from '../../config/config.js'
@@ -130,6 +131,21 @@ function getWoohooAuthorizationCode() {
         },
     }
 
+    return axios.post(
+        `${config.keys.woohoo.endpoint}/oauth2/verify`,
+        {
+            clientId: config.keys.woohoo.clientId,
+            username: config.keys.woohoo.username,
+            password: config.keys.woohoo.password,
+        },
+        {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        },
+    )
+
     return new Promise((resolve, reject) => {
         let response = ''
         const req = http.request(options, (res) => {
@@ -153,6 +169,7 @@ function getWoohooAuthorizationCode() {
 
 async function getWoohooAuthorizationToken() {
     const authorization = await getWoohooAuthorizationCode()
+    return authorization
 
     if (isValidJSON(authorization)) {
         const options = {
